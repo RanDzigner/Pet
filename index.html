@@ -98,13 +98,13 @@
         
         <!-- Top App Bar -->
         <header class="sticky top-0 z-20 px-6 py-4 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-md flex justify-between items-center border-b border-gray-100 dark:border-gray-800">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 p-1.5 -ml-1.5 rounded-xl transition-colors" onclick="app.openModal('modal-switch-cat')">
                 <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold text-xl overflow-hidden shadow-sm">
                     <img id="header-avatar" src="https://placehold.co/100x100/14b8a6/ffffff?text=C&font=Montserrat" alt="Cat Avatar" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h1 id="header-greeting" class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Halo! 🐾</h1>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">Siap untuk hari ini?</p>
+                    <h1 id="header-greeting" class="text-lg font-bold text-gray-900 dark:text-white leading-tight flex items-center gap-2">Halo! <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i></h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Ganti profil kucing</p>
                 </div>
             </div>
             <button id="themeToggle" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
@@ -172,7 +172,18 @@
             <div id="view-routine" class="view-section hidden">
                 <div class="px-6 py-6 pb-20">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Rutinitas Harian</h2>
-                    <p id="current-date-display" class="text-sm text-gray-500 dark:text-gray-400 mb-6">Hari ini</p>
+                    <p id="current-date-display" class="text-sm text-gray-500 dark:text-gray-400 mb-4">Hari ini</p>
+
+                    <!-- Smart Schedule Suggestion -->
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-4 shadow-sm mb-6 text-white flex justify-between items-center cursor-pointer hover:shadow-md transition-shadow active:scale-95" onclick="app.openModal('modal-smart-schedule')">
+                        <div>
+                            <h3 class="font-bold text-sm mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Buat Jadwal Pintar</h3>
+                            <p class="text-xs text-blue-100 opacity-90">Otomatis buat jadwal sesuai umur</p>
+                        </div>
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
 
                     <!-- Dynamic Task List Container -->
                     <div id="task-list-container" class="space-y-4">
@@ -194,145 +205,256 @@
                     <!-- Weight Tracking Summary -->
                     <div class="bg-white dark:bg-dark-card rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800 mb-6">
                         <div class="flex justify-between items-center mb-2">
-                            <div>
-                                <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Berat Badan Saat Ini</h3>
-                            </div>
-                            <span class="text-2xl font-bold text-primary-500" id="health-weight-display">-- <span class="text-sm text-gray-500 font-normal">kg</span></span>
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Berat Badan Saat Ini</h3>
                         </div>
-                        <p class="text-xs text-gray-500">Catat berat badan secara rutin di menu Profil untuk memantau kesehatan.</p>
+                        <span class="text-2xl font-bold text-primary-500" id="health-weight-display">-- <span class="text-sm text-gray-500 font-normal">kg</span></span>
                     </div>
+                    <p class="text-xs text-gray-500">Catat berat badan secara rutin di menu Profil untuk memantau kesehatan.</p>
+                </div>
 
-                    <!-- Medical History List -->
-                    <div class="flex justify-between items-end mb-3">
-                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Riwayat Medis & Vaksin</h3>
-                    </div>
-                    <div id="health-history-container" class="space-y-3">
-                        <!-- History will be injected here -->
-                    </div>
+                <!-- Jadwal Kontrol & Perawatan -->
+                <div class="flex justify-between items-end mb-3">
+                    <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Jadwal Perawatan & Dokter</h3>
+                    <button onclick="app.openModal('modal-add-care')" class="text-xs text-primary-600 dark:text-primary-400 font-medium px-3 py-1.5 bg-primary-50 dark:bg-primary-900/20 rounded-lg hover:bg-primary-100 transition-colors">+ Tambah</button>
+                </div>
+                <div id="care-schedule-container" class="space-y-3 mb-6">
+                    <!-- Care schedules injected here -->
+                </div>
+
+                <!-- Medical History List -->
+                <div class="flex justify-between items-end mb-3">
+                    <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Riwayat Medis & Vaksin</h3>
+                </div>
+                <div id="health-history-container" class="space-y-3">
+                    <!-- History will be injected here -->
                 </div>
             </div>
-
-            <!-- VIEW: PROFIL (PROFILE) -->
-            <div id="view-profile" class="view-section hidden">
-                <div class="px-6 py-8 flex flex-col items-center border-b border-gray-100 dark:border-gray-800 relative">
-                    <div class="relative mb-4">
-                        <div class="w-24 h-24 rounded-full bg-primary-100 border-4 border-white dark:border-gray-800 shadow-md overflow-hidden">
-                            <img id="profile-avatar" src="https://placehold.co/200x200/14b8a6/ffffff?text=C&font=Montserrat" alt="Cat Avatar" class="w-full h-full object-cover">
-                        </div>
-                    </div>
-                    <h2 id="profile-name" class="text-xl font-bold text-gray-900 dark:text-white">Nama Kucing</h2>
-                    <p id="profile-desc" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Ras • Gender • Umur</p>
-                    
-                    <button onclick="app.openModal('modal-edit-profile')" class="mt-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                        <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Profil
-                    </button>
-                </div>
-
-                <div class="px-6 py-6 space-y-6">
-                    <div>
-                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Sistem Data</h3>
-                        <div class="bg-white dark:bg-dark-card rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-                            <button onclick="app.resetData()" class="w-full flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
-                                <div class="flex items-center gap-3 text-sm font-medium text-red-600 dark:text-red-400">
-                                    <i class="fa-solid fa-trash-can w-5"></i> Hapus Semua Data
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Safe area bottom spacing -->
-            <div class="h-10"></div>
-        </main>
-
-        <!-- MODALS AREA -->
+        </div>
         
-        <!-- Modal Add Task -->
-        <div id="modal-add-task" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
-            <!-- Backdrop -->
-            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-add-task')"></div>
-            <!-- Modal Content -->
-            <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-add-task-content">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tambah Rutinitas</h3>
-                    <button onclick="app.closeModal('modal-add-task')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500">
-                        <i class="fa-solid fa-xmark"></i>
+        <!-- VIEW: PROFIL (PROFILE) -->
+        <div id="view-profile" class="view-section hidden animate-fade-in">
+            <div class="px-6 py-6 pb-20">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Profil Kucing</h2>
+                
+                <div class="bg-white dark:bg-dark-card rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 text-center relative mb-6">
+                    <div class="w-24 h-24 mx-auto rounded-full bg-primary-100 dark:bg-primary-900/30 p-1 mb-4 shadow-sm">
+                        <img id="profile-avatar" src="https://placehold.co/200x200/14b8a6/ffffff?text=C&font=Montserrat" alt="Profile" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <h3 id="profile-name" class="text-xl font-bold text-gray-900 dark:text-white">Memuat...</h3>
+                    <p id="profile-desc" class="text-xs text-gray-500 mt-1">...</p>
+                    <button onclick="app.openModal('modal-edit-profile')" class="mt-4 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Edit Profil</button>
+                </div>
+
+                <div class="space-y-3">
+                    <button onclick="app.openModal('modal-switch-cat')" class="w-full bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary-50 dark:bg-primary-900/20 text-primary-500 flex items-center justify-center"><i class="fa-solid fa-cat"></i></div>
+                            <div class="text-left"><p class="text-sm font-semibold text-gray-900 dark:text-white">Kucing Lainnya</p><p class="text-[10px] text-gray-500">Ganti profil atau tambah kucing</p></div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-gray-400 text-sm"></i>
+                    </button>
+                    <button onclick="app.resetData()" class="w-full bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex justify-between items-center hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-50 dark:bg-red-900/20 text-red-500 flex items-center justify-center"><i class="fa-solid fa-trash-can"></i></div>
+                            <div class="text-left"><p class="text-sm font-semibold text-red-500">Hapus Semua Data</p></div>
+                        </div>
                     </button>
                 </div>
-                <form id="form-add-task" onsubmit="app.submitNewTask(event)" class="space-y-4">
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- MODALS -->
+    
+    <!-- Modal: Switch Cat -->
+    <div id="modal-switch-cat" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-switch-cat')"></div>
+        <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-switch-cat-content">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Pilih Kucing</h3>
+                <button onclick="app.closeModal('modal-switch-cat')" class="text-gray-500 hover:text-gray-700 bg-gray-100 dark:bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="cat-list-container" class="max-h-60 overflow-y-auto mb-4 hide-scrollbar">
+                <!-- Cat List injected here -->
+            </div>
+            <button onclick="app.closeModal('modal-switch-cat'); setTimeout(() => app.openModal('modal-add-cat'), 300)" class="w-full py-3.5 border-2 border-dashed border-primary-500 text-primary-600 dark:text-primary-400 rounded-xl font-semibold hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus"></i> Tambah Kucing Baru
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal: Add Cat -->
+    <div id="modal-add-cat" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-add-cat')"></div>
+        <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-add-cat-content">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tambah Kucing Baru</h3>
+                <button onclick="app.closeModal('modal-add-cat')" class="text-gray-500 hover:text-gray-700 bg-gray-100 dark:bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="app.submitNewCat(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kucing</label>
+                    <input type="text" id="add-cat-name" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Ras / Jenis</label>
+                    <input type="text" id="add-cat-breed" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Tugas</label>
-                        <input type="text" id="task-title" required placeholder="Contoh: Beri makan basah" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Kelamin</label>
+                        <select id="add-cat-gender" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                            <option>Jantan</option>
+                            <option>Betina</option>
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Keterangan / Waktu</label>
-                        <input type="text" id="task-desc" required placeholder="Contoh: 08:00 Pagi" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Umur</label>
+                        <input type="text" id="add-cat-age" placeholder="Cth: 1 Tahun" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Berat Badan (kg)</label>
+                    <input type="number" step="0.1" id="add-cat-weight" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">Simpan Kucing</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Edit Profile -->
+    <div id="modal-edit-profile" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-edit-profile')"></div>
+        <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-edit-profile-content">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Edit Profil</h3>
+                <button onclick="app.closeModal('modal-edit-profile')" class="text-gray-500 hover:text-gray-700 bg-gray-100 dark:bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="app.submitProfileEdit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kucing</label>
+                    <input type="text" id="edit-name" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Ras / Jenis</label>
+                    <input type="text" id="edit-breed" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Kelamin</label>
+                        <select id="edit-gender" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                            <option>Jantan</option>
+                            <option>Betina</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Umur</label>
+                        <input type="text" id="edit-age" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Berat Badan (kg)</label>
+                    <input type="number" step="0.1" id="edit-weight" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Task -->
+    <div id="modal-add-task" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-add-task')"></div>
+        <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-add-task-content">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tambah Rutinitas</h3>
+                <button onclick="app.closeModal('modal-add-task')" class="text-gray-500 hover:text-gray-700 bg-gray-100 dark:bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="app.submitNewTask(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Tugas</label>
+                    <input type="text" id="task-title" required placeholder="Contoh: Beri Makan Siang" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Waktu / Deskripsi</label>
+                    <input type="text" id="task-desc" placeholder="Contoh: Jam 12:00 atau Setelah Main" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori (Icon)</label>
+                    <select id="task-category" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+                        <option value="food">Makanan</option>
+                        <option value="water">Minuman</option>
+                        <option value="hygiene">Pasir / Kebersihan</option>
+                        <option value="medical">Obat / Lainnya</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">Simpan Rutinitas</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Smart Schedule -->
+    <div id="modal-smart-schedule" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-smart-schedule')"></div>
+        <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-smart-schedule-content">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Pilih Umur Kucing</h3>
+                <button onclick="app.closeModal('modal-smart-schedule')" class="text-gray-500 hover:text-gray-700 bg-gray-100 dark:bg-gray-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3">
+                <button onclick="app.generateSchedule('kitten')" class="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all">
+                    <h4 class="font-bold text-gray-900 dark:text-white text-sm">Kitten (0 - 6 Bulan)</h4>
+                    <p class="text-xs text-gray-500 mt-1">Makan 3-4x sehari, sering main, cek pasir rutin.</p>
+                </button>
+                <button onclick="app.generateSchedule('adult')" class="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all">
+                    <h4 class="font-bold text-gray-900 dark:text-white text-sm">Dewasa (1 - 6 Tahun)</h4>
+                    <p class="text-xs text-gray-500 mt-1">Makan 2x sehari, jadwal stabil, waktu main malam.</p>
+                </button>
+                <button onclick="app.generateSchedule('senior')" class="w-full text-left p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all">
+                    <h4 class="font-bold text-gray-900 dark:text-white text-sm">Senior (7+ Tahun)</h4>
+                    <p class="text-xs text-gray-500 mt-1">Makan 3x porsi kecil, fokus asupan air & ginjal.</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Care/Vet Schedule -->
+    <div id="modal-add-care" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-add-care')"></div>
+        <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-add-care-content">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tambah Jadwal Baru</h3>
+                <button onclick="app.closeModal('modal-add-care')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="form-add-care" onsubmit="app.submitNewCare(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kegiatan</label>
+                    <input type="text" id="care-title" required placeholder="Contoh: Vaksin Rabies / Grooming Bulanan" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal</label>
+                        <input type="date" id="care-date" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori</label>
-                        <select id="task-category" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                            <option value="food">Makanan</option>
-                            <option value="water">Minuman</option>
-                            <option value="hygiene">Kebersihan (Pasir)</option>
-                            <option value="medical">Medis / Obat</option>
+                        <select id="care-type" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <option value="vet">🩺 Kontrol Dokter</option>
+                            <option value="grooming">✂️ Grooming / Salon</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">
-                        Simpan Tugas
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal Edit Profile -->
-        <div id="modal-edit-profile" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
-            <!-- Backdrop -->
-            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-edit-profile')"></div>
-            <!-- Modal Content -->
-            <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-edit-profile-content">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Edit Profil Kucing</h3>
-                    <button onclick="app.closeModal('modal-edit-profile')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
                 </div>
-                <form id="form-edit-profile" onsubmit="app.submitProfileEdit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kucing</label>
-                        <input type="text" id="edit-name" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Ras</label>
-                            <input type="text" id="edit-breed" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Kelamin</label>
-                            <select id="edit-gender" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                                <option value="Jantan">Jantan</option>
-                                <option value="Betina">Betina</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Umur</label>
-                            <input type="text" id="edit-age" placeholder="Contoh: 2 Tahun" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Berat (kg)</label>
-                            <input type="number" step="0.1" id="edit-weight" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">
-                        Simpan Profil
-                    </button>
-                </form>
-            </div>
+                <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">
+                    Simpan Jadwal
+                </button>
+            </form>
         </div>
+    </div>
 
-        <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar -->
         <nav class="absolute bottom-0 w-full bg-white dark:bg-dark-bg border-t border-gray-200 dark:border-gray-800 shadow-nav z-30 pb-safe">
             <ul class="flex justify-around items-center px-2 py-2">
                 <li class="flex-1">
@@ -385,32 +507,63 @@
     <script>
         // --- 1. State Management & Data ---
         const defaultData = {
-            profile: {
-                name: 'Kucingku',
-                breed: 'Domestic Short Hair',
-                gender: 'Betina',
-                age: '1 Tahun',
-                weight: '3.5'
-            },
-            tasks: [
-                { id: 1, title: 'Sarapan (Dry Food)', desc: '07:00 Pagi', category: 'food', completed: false },
-                { id: 2, title: 'Ganti Air Minum', desc: 'Pagi Hari', category: 'water', completed: false },
-                { id: 3, title: 'Bersihkan Litter Box', desc: 'Sore Hari', category: 'hygiene', completed: false }
-            ],
-            healthHistory: [
-                { id: 1, title: 'Vaksin Tahunan', date: 'Bulan Lalu', type: 'vaccine' }
+            activeCatId: 1,
+            cats: [
+                {
+                    id: 1,
+                    profile: {
+                        name: 'Kucingku',
+                        breed: 'Domestic Short Hair',
+                        gender: 'Betina',
+                        age: '1 Tahun',
+                        weight: '3.5'
+                    },
+                    tasks: [
+                        { id: 1, title: 'Sarapan (Dry Food)', desc: '07:00 Pagi', category: 'food', completed: false },
+                        { id: 2, title: 'Ganti Air Minum', desc: 'Pagi Hari', category: 'water', completed: false },
+                        { id: 3, title: 'Bersihkan Litter Box', desc: 'Sore Hari', category: 'hygiene', completed: false }
+                    ],
+                    careSchedules: [
+                        { id: 1, title: 'Cek Kesehatan Rutin', date: '2024-05-10', type: 'vet' },
+                        { id: 2, title: 'Potong Kuku & Mandi', date: '2024-06-01', type: 'grooming' }
+                    ],
+                    healthHistory: [
+                        { id: 1, title: 'Vaksin Tahunan', date: 'Bulan Lalu', type: 'vaccine' }
+                    ]
+                }
             ]
         };
 
         // Application Object to hold logic
         const app = {
             data: null,
+            notificationTimer: null,
 
             init: function() {
-                // Load data from LocalStorage or use default
                 const savedData = localStorage.getItem('purrfectCareData');
                 if (savedData) {
-                    this.data = JSON.parse(savedData);
+                    const parsedData = JSON.parse(savedData);
+                    // Cek jika pengguna memakai versi lama (single cat), kita migrasikan datanya
+                    if (parsedData.profile && !parsedData.cats) {
+                        this.data = {
+                            activeCatId: 1,
+                            cats: [{
+                                id: 1,
+                                profile: parsedData.profile,
+                                tasks: parsedData.tasks || [],
+                                careSchedules: [],
+                                healthHistory: parsedData.healthHistory || []
+                            }]
+                        };
+                        this.saveData();
+                    } else {
+                        this.data = parsedData;
+                        // Migrasi data agar struktur baru (careSchedules) didukung di profil lama Anda
+                        this.data.cats.forEach(cat => {
+                            if(!cat.careSchedules) cat.careSchedules = [];
+                        });
+                        this.saveData();
+                    }
                 } else {
                     this.data = JSON.parse(JSON.stringify(defaultData));
                     this.saveData();
@@ -418,10 +571,15 @@
 
                 this.setupUI();
                 this.renderAll();
+                this.setupNotifications();
                 
                 // Set current date string
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('current-date-display').textContent = new Date().toLocaleDateString('id-ID', options);
+            },
+
+            getActiveCat: function() {
+                return this.data.cats.find(c => c.id === this.data.activeCatId) || this.data.cats[0];
             },
 
             saveData: function() {
@@ -433,15 +591,17 @@
                 this.renderTasks();
                 this.renderHomeStats();
                 this.renderHealth();
+                this.renderCatList();
             },
 
             renderProfile: function() {
-                const { name, breed, gender, age, weight } = this.data.profile;
+                const activeCat = this.getActiveCat();
+                const { name, breed, gender, age, weight } = activeCat.profile;
                 const avatarLetter = name.charAt(0).toUpperCase();
                 const avatarUrl = `https://placehold.co/200x200/14b8a6/ffffff?text=${avatarLetter}&font=Montserrat`;
                 
                 // Header
-                document.getElementById('header-greeting').textContent = `Halo, ${name}! 🐾`;
+                document.getElementById('header-greeting').innerHTML = `Halo, ${name}! <i class="fa-solid fa-chevron-down text-xs text-gray-400 ml-1"></i>`;
                 document.getElementById('header-avatar').src = avatarUrl;
                 
                 // Profile View
@@ -457,25 +617,90 @@
                 document.getElementById('edit-weight').value = weight;
             },
 
+            renderCatList: function() {
+                const container = document.getElementById('cat-list-container');
+                container.innerHTML = '';
+
+                this.data.cats.forEach(cat => {
+                    const isActive = cat.id === this.data.activeCatId;
+                    const avatarLetter = cat.profile.name.charAt(0).toUpperCase();
+                    
+                    const html = `
+                        <div onclick="app.switchCat(${cat.id})" class="flex items-center justify-between p-3 rounded-xl border ${isActive ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-700'} cursor-pointer transition-colors mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold text-lg overflow-hidden shadow-sm">
+                                    <img src="https://placehold.co/100x100/14b8a6/ffffff?text=${avatarLetter}&font=Montserrat" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold ${isActive ? 'text-primary-700 dark:text-primary-300' : 'text-gray-900 dark:text-white'}">${cat.profile.name}</h4>
+                                    <p class="text-[10px] text-gray-500">${cat.profile.breed}</p>
+                                </div>
+                            </div>
+                            ${isActive ? '<i class="fa-solid fa-circle-check text-primary-500 text-lg"></i>' : ''}
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            },
+
+            switchCat: function(id) {
+                this.data.activeCatId = id;
+                this.saveData();
+                this.renderAll();
+                this.closeModal('modal-switch-cat');
+                showNotification(`Beralih ke profil ${this.getActiveCat().profile.name}`);
+            },
+
+            submitNewCat: function(e) {
+                e.preventDefault();
+                const newId = Date.now();
+                const newCat = {
+                    id: newId,
+                    profile: {
+                        name: document.getElementById('add-cat-name').value,
+                        breed: document.getElementById('add-cat-breed').value,
+                        gender: document.getElementById('add-cat-gender').value,
+                        age: document.getElementById('add-cat-age').value,
+                        weight: document.getElementById('add-cat-weight').value
+                    },
+                    tasks: [
+                        { id: Date.now()+1, title: 'Beri Makan', desc: 'Sesuai jadwal', category: 'food', completed: false }
+                    ],
+                    careSchedules: [],
+                    healthHistory: []
+                };
+
+                this.data.cats.push(newCat);
+                this.data.activeCatId = newId; // Otomatis pindah ke kucing baru
+                this.saveData();
+                this.renderAll();
+                
+                this.closeModal('modal-add-cat');
+                e.target.reset(); // Reset form
+                showNotification(`Profil kucing ${newCat.profile.name} berhasil ditambahkan!`, 'success');
+            },
+
             renderHomeStats: function() {
-                const totalTasks = this.data.tasks.length;
-                const completedTasks = this.data.tasks.filter(t => t.completed).length;
+                const activeCat = this.getActiveCat();
+                const totalTasks = activeCat.tasks.length;
+                const completedTasks = activeCat.tasks.filter(t => t.completed).length;
                 let percentage = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
                 
-                document.getElementById('home-weight').textContent = `${this.data.profile.weight} kg`;
+                document.getElementById('home-weight').textContent = `${activeCat.profile.weight} kg`;
                 document.getElementById('home-task-count').innerHTML = `${completedTasks} <span class="text-base font-normal text-gray-500">/ ${totalTasks}</span>`;
                 document.getElementById('home-task-progress').style.width = `${percentage}%`;
             },
 
             renderTasks: function() {
+                const activeCat = this.getActiveCat();
                 const container = document.getElementById('task-list-container');
-                container.innerHTML = ''; // Clear existing
+                container.innerHTML = '';
 
-                if (this.data.tasks.length === 0) {
-                    container.innerHTML = `<p class="text-center text-gray-500 py-10 text-sm">Belum ada rutinitas. Tambahkan tugas baru!</p>`;
+                if (activeCat.tasks.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-500 py-10 text-sm">Belum ada rutinitas untuk ${activeCat.profile.name}. Tambahkan tugas baru!</p>`;
                     return;
                 }
-
+                
                 // Helper to get icon based on category
                 const getIcon = (category) => {
                     switch(category) {
@@ -486,7 +711,7 @@
                     }
                 };
 
-                this.data.tasks.forEach(task => {
+                activeCat.tasks.forEach(task => {
                     const style = getIcon(task.category);
                     const isChecked = task.completed ? 'checked' : '';
                     const opacityClass = task.completed ? 'opacity-60 bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-dark-card hover:border-primary-300';
@@ -517,29 +742,75 @@
             },
 
             renderHealth: function() {
-                document.getElementById('health-weight-display').innerHTML = `${this.data.profile.weight} <span class="text-sm text-gray-500 font-normal">kg</span>`;
+                const activeCat = this.getActiveCat();
+                document.getElementById('health-weight-display').innerHTML = `${activeCat.profile.weight} <span class="text-sm text-gray-500 font-normal">kg</span>`;
                 
+                // Render Care Schedules
+                const careContainer = document.getElementById('care-schedule-container');
+                careContainer.innerHTML = '';
+                
+                if (!activeCat.careSchedules || activeCat.careSchedules.length === 0) {
+                    careContainer.innerHTML = `<p class="text-center text-gray-500 py-3 text-xs border border-dashed border-gray-300 dark:border-gray-700 rounded-xl">Belum ada jadwal perawatan/dokter terdekat.</p>`;
+                } else {
+                    // Sort by date (closest first)
+                    const sortedSchedules = [...activeCat.careSchedules].sort((a, b) => new Date(a.date) - new Date(b.date));
+                    
+                    sortedSchedules.forEach(schedule => {
+                        const isVet = schedule.type === 'vet';
+                        const icon = isVet ? 'fa-user-doctor' : 'fa-scissors';
+                        const colorClass = isVet ? 'bg-rose-50 dark:bg-rose-900/20 text-rose-500' : 'bg-teal-50 dark:bg-teal-900/20 text-teal-500';
+                        
+                        // Format Date nicely
+                        const dateObj = new Date(schedule.date);
+                        const formattedDate = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                        
+                        const html = `
+                            <div class="bg-white dark:bg-dark-card p-3 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full ${colorClass} flex items-center justify-center">
+                                        <i class="fa-solid ${icon}"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">${schedule.title}</h4>
+                                        <p class="text-[10px] font-medium text-gray-500 mt-0.5"><i class="fa-regular fa-calendar mr-1"></i> ${formattedDate}</p>
+                                    </div>
+                                </div>
+                                <button onclick="app.deleteCare(${schedule.id}, event)" class="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                    <i class="fa-solid fa-trash text-xs"></i>
+                                </button>
+                            </div>
+                        `;
+                        careContainer.insertAdjacentHTML('beforeend', html);
+                    });
+                }
+
+                // Render Medical History
                 const container = document.getElementById('health-history-container');
                 container.innerHTML = '';
                 
-                this.data.healthHistory.forEach(record => {
-                    const html = `
-                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
-                            <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-500 flex items-center justify-center mt-1">
-                                <i class="fa-solid fa-shield-cat"></i>
+                if (activeCat.healthHistory.length === 0) {
+                     container.innerHTML = `<p class="text-center text-gray-500 py-4 text-xs">Belum ada riwayat medis.</p>`;
+                } else {
+                    activeCat.healthHistory.forEach(record => {
+                        const html = `
+                            <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-500 flex items-center justify-center mt-1">
+                                    <i class="fa-solid fa-shield-cat"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white">${record.title}</h4>
+                                    <p class="text-[10px] font-medium text-gray-400 mt-1"><i class="fa-regular fa-calendar mr-1"></i> ${record.date}</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white">${record.title}</h4>
-                                <p class="text-[10px] font-medium text-gray-400 mt-1"><i class="fa-regular fa-calendar mr-1"></i> ${record.date}</p>
-                            </div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', html);
-                });
+                        `;
+                        container.insertAdjacentHTML('beforeend', html);
+                    });
+                }
             },
 
             toggleTask: function(id) {
-                const task = this.data.tasks.find(t => t.id === id);
+                const activeCat = this.getActiveCat();
+                const task = activeCat.tasks.find(t => t.id === id);
                 if (task) {
                     task.completed = !task.completed;
                     this.saveData();
@@ -553,10 +824,11 @@
             },
 
             deleteTask: function(id, event) {
-                event.preventDefault(); // Prevent triggering the label toggle
+                event.preventDefault(); 
                 event.stopPropagation();
                 
-                this.data.tasks = this.data.tasks.filter(t => t.id !== id);
+                const activeCat = this.getActiveCat();
+                activeCat.tasks = activeCat.tasks.filter(t => t.id !== id);
                 this.saveData();
                 this.renderTasks();
                 this.renderHomeStats();
@@ -570,21 +842,100 @@
                 const category = document.getElementById('task-category').value;
                 
                 const newTask = {
-                    id: Date.now(), // Generate unique ID
+                    id: Date.now(), 
                     title,
                     desc,
                     category,
                     completed: false
                 };
                 
-                this.data.tasks.push(newTask);
+                const activeCat = this.getActiveCat();
+                activeCat.tasks.push(newTask);
                 this.saveData();
                 this.renderTasks();
                 this.renderHomeStats();
                 
                 this.closeModal('modal-add-task');
-                e.target.reset(); // Reset form
+                e.target.reset(); 
                 showNotification('Rutinitas baru ditambahkan!', 'success');
+            },
+
+            submitNewCare: function(e) {
+                e.preventDefault();
+                const title = document.getElementById('care-title').value;
+                const date = document.getElementById('care-date').value;
+                const type = document.getElementById('care-type').value;
+                
+                const newCare = {
+                    id: Date.now(), 
+                    title,
+                    date,
+                    type
+                };
+                
+                const activeCat = this.getActiveCat();
+                if(!activeCat.careSchedules) activeCat.careSchedules = [];
+                activeCat.careSchedules.push(newCare);
+                
+                this.saveData();
+                this.renderHealth();
+                
+                this.closeModal('modal-add-care');
+                e.target.reset(); 
+                showNotification('Jadwal berhasil ditambahkan!', 'success');
+            },
+
+            deleteCare: function(id, event) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                const activeCat = this.getActiveCat();
+                activeCat.careSchedules = activeCat.careSchedules.filter(c => c.id !== id);
+                this.saveData();
+                this.renderHealth();
+                showNotification('Jadwal dihapus');
+            },
+
+            generateSchedule: function(ageGroup) {
+                const activeCat = this.getActiveCat();
+                let newTasks = [];
+                const baseId = Date.now();
+
+                if (ageGroup === 'kitten') {
+                    newTasks = [
+                        { id: baseId + 1, title: 'Sarapan Pagi', desc: '07:00 Pagi', category: 'food', completed: false },
+                        { id: baseId + 2, title: 'Ganti Air Minum', desc: '07:15 Pagi', category: 'water', completed: false },
+                        { id: baseId + 3, title: 'Makan Siang', desc: '12:00 Siang', category: 'food', completed: false },
+                        { id: baseId + 4, title: 'Makan Sore', desc: '17:00 Sore', category: 'food', completed: false },
+                        { id: baseId + 5, title: 'Bersihkan Pasir', desc: '18:00 Malam', category: 'hygiene', completed: false },
+                        { id: baseId + 6, title: 'Makan Malam', desc: '22:00 Malam', category: 'food', completed: false }
+                    ];
+                } else if (ageGroup === 'adult') {
+                    newTasks = [
+                        { id: baseId + 1, title: 'Sarapan Pagi', desc: '07:00 Pagi', category: 'food', completed: false },
+                        { id: baseId + 2, title: 'Ganti Air Minum', desc: '07:15 Pagi', category: 'water', completed: false },
+                        { id: baseId + 3, title: 'Makan Sore / Malam', desc: '18:30 Malam', category: 'food', completed: false },
+                        { id: baseId + 4, title: 'Bersihkan Pasir', desc: '19:00 Malam', category: 'hygiene', completed: false },
+                        { id: baseId + 5, title: 'Waktu Bermain', desc: '20:00 Malam', category: 'medical', completed: false }
+                    ];
+                } else {
+                    newTasks = [
+                        { id: baseId + 1, title: 'Sarapan (Porsi Kecil)', desc: '07:00 Pagi', category: 'food', completed: false },
+                        { id: baseId + 2, title: 'Cek Air (Sangat Penting)', desc: '07:15 Pagi', category: 'water', completed: false },
+                        { id: baseId + 3, title: 'Makan Siang (Porsi Kecil)', desc: '13:00 Siang', category: 'food', completed: false },
+                        { id: baseId + 4, title: 'Makan Malam (Porsi Kecil)', desc: '19:00 Malam', category: 'food', completed: false },
+                        { id: baseId + 5, title: 'Cek Air & Pasir', desc: '19:30 Malam', category: 'hygiene', completed: false }
+                    ];
+                }
+
+                // Tambahkan tugas baru ke daftar tugas yang sudah ada
+                activeCat.tasks = [...activeCat.tasks, ...newTasks];
+                this.saveData();
+                this.renderTasks();
+                this.renderHomeStats();
+                
+                this.closeModal('modal-smart-schedule');
+                showNotification(`Jadwal pintar untuk ${ageGroup} berhasil ditambahkan!`, 'success');
             },
 
             quickAddAction: function(category) {
@@ -598,11 +949,13 @@
 
             submitProfileEdit: function(e) {
                 e.preventDefault();
-                this.data.profile.name = document.getElementById('edit-name').value;
-                this.data.profile.breed = document.getElementById('edit-breed').value;
-                this.data.profile.gender = document.getElementById('edit-gender').value;
-                this.data.profile.age = document.getElementById('edit-age').value;
-                this.data.profile.weight = document.getElementById('edit-weight').value;
+                const activeCat = this.getActiveCat();
+                
+                activeCat.profile.name = document.getElementById('edit-name').value;
+                activeCat.profile.breed = document.getElementById('edit-breed').value;
+                activeCat.profile.gender = document.getElementById('edit-gender').value;
+                activeCat.profile.age = document.getElementById('edit-age').value;
+                activeCat.profile.weight = document.getElementById('edit-weight').value;
                 
                 this.saveData();
                 this.renderAll();
@@ -622,7 +975,6 @@
                 const content = document.getElementById(`${modalId}-content`);
                 modal.classList.remove('hidden');
                 
-                // Allow display flex to apply before animating in
                 setTimeout(() => {
                     content.classList.remove('translate-y-full');
                 }, 10);
@@ -634,10 +986,46 @@
                 
                 content.classList.add('translate-y-full');
                 
-                // Wait for animation to finish before hiding
                 setTimeout(() => {
                     modal.classList.add('hidden');
-                }, 300); // 300ms matches Tailwind default transition duration
+                }, 300); 
+            },
+
+            setupNotifications: function() {
+                // Meminta Izin Notifikasi dari Browser Handphone/Desktop
+                if ("Notification" in window) {
+                    if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                        Notification.requestPermission();
+                    }
+                }
+
+                // Cek jadwal setiap 1 menit
+                if(this.notificationTimer) clearInterval(this.notificationTimer);
+                this.notificationTimer = setInterval(() => {
+                    this.checkScheduleAlarms();
+                }, 60000); 
+            },
+
+            checkScheduleAlarms: function() {
+                if (Notification.permission !== "granted") return;
+
+                const activeCat = this.getActiveCat();
+                const now = new Date();
+                const currentHour = now.getHours().toString().padStart(2, '0');
+                const currentMinute = now.getMinutes().toString().padStart(2, '0');
+                
+                // Format jam misalnya "07:00"
+                const timeString = `${currentHour}:${currentMinute}`;
+
+                activeCat.tasks.forEach(task => {
+                    // Jika tugas belum selesai dan format jam cocok (misal 07:00 ada di dalam "07:00 Pagi")
+                    if (!task.completed && task.desc.includes(timeString)) {
+                        new Notification(`Hei, waktunya untuk ${activeCat.profile.name}! 🐱`, {
+                            body: `${task.title} - Jangan sampai terlewat.`,
+                            icon: 'https://placehold.co/100x100/14b8a6/ffffff?text=Meow'
+                        });
+                    }
+                });
             },
 
             setupUI: function() {

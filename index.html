@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Purrfect Care - Aplikasi Perawatan Kucing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for standard icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6', // Teal main
+                            600: '#0d9488',
+                            900: '#134e4a',
+                        },
+                        secondary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316', // Orange accent
+                        },
+                        dark: {
+                            bg: '#121212',
+                            card: '#1e1e1e',
+                            text: '#f3f4f6'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'nav': '0 -4px 20px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom base styles to ensure mobile app feel */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none; /* Prevent pull-to-refresh bounce on mobile */
+        }
+        
+        /* Hide scrollbar for clean app look but allow scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Smooth transitions for theme switching */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Layout constraint to simulate mobile screen on desktop */
+        .mobile-container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            min-height: 100vh;
+            background-color: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dark .mobile-container {
+            background-color: #121212;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        /* Tab content area must take remaining space */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased selection:bg-primary-500 selection:text-white">
+
+    <div class="mobile-container dark:bg-dark-bg">
+        
+        <!-- Top App Bar -->
+        <header class="sticky top-0 z-20 px-6 py-4 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-md flex justify-between items-center border-b border-gray-100 dark:border-gray-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold text-xl overflow-hidden shadow-sm">
+                    <!-- Placeholder for Cat Avatar -->
+                    <img src="https://placehold.co/100x100/14b8a6/ffffff?text=L&font=Montserrat" alt="Luna" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Halo, Luna! 🐾</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Siap untuk hari ini?</p>
+                </div>
+            </div>
+            <button id="themeToggle" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                <i class="fa-solid fa-sun text-lg hidden dark:block"></i>
+            </button>
+        </header>
+
+        <main class="content-area hide-scrollbar relative">
+            
+            <!-- VIEW: HOME DASHBOARD -->
+            <div id="view-home" class="view-section block animate-fade-in">
+                
+                <!-- Status Cards -->
+                <div class="px-6 pt-6 pb-2 grid grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-4 text-white shadow-soft relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 opacity-20">
+                            <i class="fa-solid fa-heart-pulse text-6xl"></i>
+                        </div>
+                        <p class="text-primary-100 text-xs font-medium uppercase tracking-wider mb-1">Status Kesehatan</p>
+                        <h2 class="text-2xl font-bold">Sangat Baik</h2>
+                        <div class="mt-3 flex items-center gap-2 text-sm bg-black/10 w-fit px-2 py-1 rounded-full backdrop-blur-sm">
+                            <i class="fa-solid fa-weight-scale"></i>
+                            <span>4.2 kg</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-4 shadow-soft border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">Tugas Hari Ini</p>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">2 <span class="text-base font-normal text-gray-500">/ 5</span></h2>
+                        </div>
+                        <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 mt-4">
+                            <div class="bg-secondary-500 h-2 rounded-full" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="px-6 py-4">
+                    <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">Tindakan Cepat</h3>
+                    <div class="flex justify-between gap-3">
+                        <button class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                            <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-bowl-food"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Beri Makan</span>
+                        </button>
+                        <button class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Beri Minum</span>
+                        </button>
+                        <button class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                            <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-poop"></i>
+                            </div>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Cek Pasir</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Upcoming Reminders -->
+                <div class="px-6 py-2 pb-6">
+                    <div class="flex justify-between items-end mb-4">
+                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Jadwal Terdekat</h3>
+                        <a href="#" class="text-xs text-primary-600 font-medium hover:underline">Lihat Semua</a>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <!-- Reminder Item 1 -->
+                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-500"></div>
+                            <div class="w-12 h-12 rounded-full bg-secondary-50 dark:bg-secondary-900/20 text-secondary-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-syringe"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Vaksin Tahunan</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Klinik Hewan Sehat, 10:00 AM</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-bold text-secondary-500 bg-secondary-50 dark:bg-secondary-900/30 px-2 py-1 rounded-md">Besok</span>
+                            </div>
+                        </div>
+
+                        <!-- Reminder Item 2 -->
+                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-300 dark:bg-gray-600"></div>
+                            <div class="w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800 text-gray-500 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-scissors"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Grooming Rutin</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Potong kuku & mandi</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs font-medium text-gray-500">15 Sep</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: RUTINITAS (TASKS) -->
+            <div id="view-routine" class="view-section hidden">
+                <div class="px-6 py-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Rutinitas Harian</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Senin, 13 September 2026</p>
+
+                    <!-- Task List -->
+                    <div class="space-y-4">
+                        
+                        <!-- Task Category: Makanan -->
+                        <div>
+                            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Makanan & Minuman</h3>
+                            <div class="space-y-2">
+                                <!-- Completed Task -->
+                                <label class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-transparent cursor-pointer opacity-70 transition-all">
+                                    <div class="relative flex items-center justify-center">
+                                        <input type="checkbox" checked class="peer sr-only">
+                                        <div class="w-6 h-6 border-2 border-primary-500 bg-primary-500 rounded-md flex items-center justify-center peer-checked:bg-primary-500 transition-colors">
+                                            <i class="fa-solid fa-check text-white text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 line-through">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Sarapan (Dry Food)</p>
+                                        <p class="text-xs text-gray-500">07:00 AM - 50 gram</p>
+                                    </div>
+                                </label>
+
+                                <!-- Pending Task -->
+                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer hover:border-primary-300 transition-all">
+                                    <div class="relative flex items-center justify-center">
+                                        <input type="checkbox" class="peer sr-only">
+                                        <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
+                                            <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Ganti Air Minum</p>
+                                        <p class="text-xs text-gray-500">Cuci mangkuk air bersih</p>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center text-sm">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+                                </label>
+
+                                <!-- Pending Task -->
+                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer hover:border-primary-300 transition-all">
+                                    <div class="relative flex items-center justify-center">
+                                        <input type="checkbox" class="peer sr-only">
+                                        <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
+                                            <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Makan Malam (Wet Food)</p>
+                                        <p class="text-xs text-gray-500">18:00 PM - 1 pouch tuna</p>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-500 flex items-center justify-center text-sm">
+                                        <i class="fa-solid fa-fish"></i>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Task Category: Kebersihan -->
+                        <div class="pt-4">
+                            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Kebersihan</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer hover:border-primary-300 transition-all">
+                                    <div class="relative flex items-center justify-center">
+                                        <input type="checkbox" class="peer sr-only">
+                                        <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
+                                            <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Bersihkan Litter Box</p>
+                                        <p class="text-xs text-gray-500">Buang kotoran & tambah pasir</p>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-500 flex items-center justify-center text-sm">
+                                        <i class="fa-solid fa-broom"></i>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <!-- Floating Action Button for adding task -->
+                <button class="absolute bottom-6 right-6 w-14 h-14 bg-primary-500 text-white rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-primary-600 transition-transform transform active:scale-90 z-10" onclick="showNotification('Fitur tambah tugas akan segera hadir!')">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <!-- VIEW: KESEHATAN (HEALTH) -->
+            <div id="view-health" class="view-section hidden">
+                <div class="px-6 py-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Rekam Medis</h2>
+
+                    <!-- Weight Chart Mockup -->
+                    <div class="bg-white dark:bg-dark-card rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800 mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Berat Badan</h3>
+                                <p class="text-xs text-gray-500">6 Bulan Terakhir</p>
+                            </div>
+                            <span class="text-lg font-bold text-primary-500">4.2 <span class="text-sm text-gray-500 font-normal">kg</span></span>
+                        </div>
+                        
+                        <!-- Simple CSS Bar Chart -->
+                        <div class="h-32 flex items-end justify-between gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-primary-100 dark:bg-primary-900/30 rounded-t-md relative group h-[60%]">
+                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.5kg</div>
+                                </div>
+                                <span class="text-[10px] text-gray-500">Apr</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-primary-200 dark:bg-primary-900/50 rounded-t-md relative group h-[70%]">
+                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.8kg</div>
+                                </div>
+                                <span class="text-[10px] text-gray-500">Mei</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-primary-300 dark:bg-primary-800/60 rounded-t-md relative group h-[75%]">
+                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.9kg</div>
+                                </div>
+                                <span class="text-[10px] text-gray-500">Jun</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-primary-400 dark:bg-primary-700/80 rounded-t-md relative group h-[75%]">
+                                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.9kg</div>
+                                </div>
+                                <span class="text-[10px] text-gray-500">Jul</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-primary-500 rounded-t-md relative group h-[85%]">
+                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">4.1kg</div>
+                                </div>
+                                <span class="text-[10px] text-gray-500">Agu</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-secondary-500 rounded-t-md relative group h-[90%] shadow-[0_0_10px_rgba(249,115,22,0.3)]">
+                                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">4.2kg</div>
+                                </div>
+                                <span class="text-[10px] text-gray-900 dark:text-white font-bold">Sep</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical History List -->
+                    <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">Riwayat Vaksin & Obat</h3>
+                    <div class="space-y-3">
+                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-500 flex items-center justify-center mt-1">
+                                <i class="fa-solid fa-shield-cat"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Vaksin F3 (Tricat)</h4>
+                                <p class="text-xs text-gray-500 mt-1">Diberikan oleh drh. Andi</p>
+                                <p class="text-[10px] font-medium text-gray-400 mt-2"><i class="fa-regular fa-calendar mr-1"></i> 12 Jan 2026</p>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center mt-1">
+                                <i class="fa-solid fa-capsules"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Obat Cacing (Drontal)</h4>
+                                <p class="text-xs text-gray-500 mt-1">Diberikan mandiri di rumah</p>
+                                <p class="text-[10px] font-medium text-gray-400 mt-2"><i class="fa-regular fa-calendar mr-1"></i> 15 Jun 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: PROFIL (PROFILE) -->
+            <div id="view-profile" class="view-section hidden">
+                <div class="px-6 py-8 flex flex-col items-center border-b border-gray-100 dark:border-gray-800">
+                    <div class="relative mb-4">
+                        <div class="w-24 h-24 rounded-full bg-primary-100 border-4 border-white dark:border-gray-800 shadow-md overflow-hidden">
+                            <img src="https://placehold.co/200x200/14b8a6/ffffff?text=Luna&font=Montserrat" alt="Luna" class="w-full h-full object-cover">
+                        </div>
+                        <button class="absolute bottom-0 right-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-sm hover:bg-primary-600">
+                            <i class="fa-solid fa-camera text-xs"></i>
+                        </button>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Luna</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Domestic Short Hair • Betina • 2 Thn</p>
+                </div>
+
+                <div class="px-6 py-6 space-y-6">
+                    <div>
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Pengaturan Akun</h3>
+                        <div class="bg-white dark:bg-dark-card rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+                            <a href="#" class="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <div class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <i class="fa-solid fa-paw text-gray-400 w-5"></i> Data Kucing
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                            </a>
+                            <a href="#" class="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <div class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <i class="fa-solid fa-bell text-gray-400 w-5"></i> Notifikasi
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                            </a>
+                            <a href="#" class="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <div class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <i class="fa-solid fa-circle-info text-gray-400 w-5"></i> Tentang Aplikasi
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 px-4 bg-red-50 dark:bg-red-900/10 text-red-500 font-medium text-sm rounded-xl border border-red-100 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors" onclick="showNotification('Anda berhasil keluar.')">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Keluar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Safe area bottom spacing -->
+            <div class="h-10"></div>
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="absolute bottom-0 w-full bg-white dark:bg-dark-bg border-t border-gray-200 dark:border-gray-800 shadow-nav z-30 pb-safe">
+            <ul class="flex justify-around items-center px-2 py-2">
+                <!-- Nav Item: Home -->
+                <li class="flex-1">
+                    <button class="nav-btn w-full flex flex-col items-center py-2 text-primary-600 dark:text-primary-400 group" data-target="view-home">
+                        <div class="relative">
+                            <i class="fa-solid fa-house text-xl mb-1 group-hover:scale-110 transition-transform duration-200"></i>
+                            <!-- Active Indicator Dot -->
+                            <span class="nav-indicator absolute -bottom-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></span>
+                        </div>
+                        <span class="text-[10px] font-medium mt-1">Beranda</span>
+                    </button>
+                </li>
+                
+                <!-- Nav Item: Tasks -->
+                <li class="flex-1">
+                    <button class="nav-btn w-full flex flex-col items-center py-2 text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group" data-target="view-routine">
+                        <div class="relative">
+                            <i class="fa-solid fa-list-check text-xl mb-1 group-hover:scale-110 transition-transform duration-200"></i>
+                            <span class="nav-indicator absolute -bottom-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full hidden"></span>
+                        </div>
+                        <span class="text-[10px] font-medium mt-1">Rutinitas</span>
+                    </button>
+                </li>
+
+                <!-- Center FAB style nav item -->
+                <li class="flex-1 flex justify-center -mt-6">
+                    <button class="w-14 h-14 bg-gradient-to-tr from-primary-600 to-primary-400 rounded-full text-white shadow-lg flex items-center justify-center text-2xl border-4 border-white dark:border-dark-bg transform transition-transform hover:scale-105 active:scale-95" onclick="showNotification('Buka scanner kamera/AI diagnostik')">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+                </li>
+
+                <!-- Nav Item: Health -->
+                <li class="flex-1">
+                    <button class="nav-btn w-full flex flex-col items-center py-2 text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group" data-target="view-health">
+                        <div class="relative">
+                            <i class="fa-solid fa-heart-pulse text-xl mb-1 group-hover:scale-110 transition-transform duration-200"></i>
+                            <span class="nav-indicator absolute -bottom-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full hidden"></span>
+                        </div>
+                        <span class="text-[10px] font-medium mt-1">Kesehatan</span>
+                    </button>
+                </li>
+
+                <!-- Nav Item: Profile -->
+                <li class="flex-1">
+                    <button class="nav-btn w-full flex flex-col items-center py-2 text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group" data-target="view-profile">
+                        <div class="relative">
+                            <i class="fa-regular fa-user text-xl mb-1 group-hover:scale-110 transition-transform duration-200"></i>
+                            <span class="nav-indicator absolute -bottom-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full hidden"></span>
+                        </div>
+                        <span class="text-[10px] font-medium mt-1">Profil</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Toast Notification System -->
+        <div id="toast-container" class="absolute top-20 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[90%] pointer-events-none">
+            <!-- Toasts will be injected here -->
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Toggle Logic ---
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const htmlElement = document.documentElement;
+            
+            // Check for saved preference or system preference
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark');
+                if (htmlElement.classList.contains('dark')) {
+                    localStorage.theme = 'dark';
+                } else {
+                    localStorage.theme = 'light';
+                }
+            });
+
+            // --- Navigation Logic ---
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const viewSections = document.querySelectorAll('.view-section');
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    // Prevent default just in case
+                    e.preventDefault();
+                    
+                    const targetId = btn.getAttribute('data-target');
+                    
+                    // 1. Update Navigation UI
+                    navButtons.forEach(b => {
+                        // Reset all buttons
+                        b.classList.remove('text-primary-600', 'dark:text-primary-400');
+                        b.classList.add('text-gray-400');
+                        // Hide all indicators
+                        b.querySelector('.nav-indicator').classList.add('hidden');
+                    });
+                    
+                    // Set active button
+                    btn.classList.remove('text-gray-400');
+                    btn.classList.add('text-primary-600', 'dark:text-primary-400');
+                    btn.querySelector('.nav-indicator').classList.remove('hidden');
+
+                    // 2. Switch Views
+                    viewSections.forEach(view => {
+                        view.classList.add('hidden');
+                        view.classList.remove('animate-fade-in'); // Reset animation
+                    });
+                    
+                    const targetView = document.getElementById(targetId);
+                    if (targetView) {
+                        targetView.classList.remove('hidden');
+                        // Add small delay to allow display block to apply before animation
+                        setTimeout(() => {
+                            targetView.classList.add('animate-fade-in');
+                        }, 10);
+                        
+                        // Scroll to top of view
+                        document.querySelector('.content-area').scrollTop = 0;
+                    }
+                });
+            });
+            
+            // Add custom animation via script insertion for cleaner HTML
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-in {
+                    animation: fadeIn 0.3s ease-out forwards;
+                }
+                
+                @keyframes slideInDown {
+                    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                .toast-enter {
+                    animation: slideInDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // --- Custom Toast Notification Function ---
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            
+            const toast = document.createElement('div');
+            toast.className = `bg-gray-800 dark:bg-white text-white dark:text-gray-900 px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium toast-enter pointer-events-auto`;
+            
+            let icon = 'fa-circle-info';
+            if (type === 'success') icon = 'fa-circle-check text-green-400';
+            
+            toast.innerHTML = `
+                <i class="fa-solid ${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

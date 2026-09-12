@@ -94,17 +94,16 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased selection:bg-primary-500 selection:text-white">
 
-    <div class="mobile-container dark:bg-dark-bg">
+    <div class="mobile-container dark:bg-dark-bg relative">
         
         <!-- Top App Bar -->
         <header class="sticky top-0 z-20 px-6 py-4 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-md flex justify-between items-center border-b border-gray-100 dark:border-gray-800">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400 font-bold text-xl overflow-hidden shadow-sm">
-                    <!-- Placeholder for Cat Avatar -->
-                    <img src="https://placehold.co/100x100/14b8a6/ffffff?text=L&font=Montserrat" alt="Luna" class="w-full h-full object-cover">
+                    <img id="header-avatar" src="https://placehold.co/100x100/14b8a6/ffffff?text=C&font=Montserrat" alt="Cat Avatar" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Halo, Luna! 🐾</h1>
+                    <h1 id="header-greeting" class="text-lg font-bold text-gray-900 dark:text-white leading-tight">Halo! 🐾</h1>
                     <p class="text-xs text-gray-500 dark:text-gray-400">Siap untuk hari ini?</p>
                 </div>
             </div>
@@ -118,7 +117,6 @@
             
             <!-- VIEW: HOME DASHBOARD -->
             <div id="view-home" class="view-section block animate-fade-in">
-                
                 <!-- Status Cards -->
                 <div class="px-6 pt-6 pb-2 grid grid-cols-2 gap-4">
                     <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-4 text-white shadow-soft relative overflow-hidden">
@@ -126,20 +124,20 @@
                             <i class="fa-solid fa-heart-pulse text-6xl"></i>
                         </div>
                         <p class="text-primary-100 text-xs font-medium uppercase tracking-wider mb-1">Status Kesehatan</p>
-                        <h2 class="text-2xl font-bold">Sangat Baik</h2>
+                        <h2 class="text-2xl font-bold">Baik</h2>
                         <div class="mt-3 flex items-center gap-2 text-sm bg-black/10 w-fit px-2 py-1 rounded-full backdrop-blur-sm">
                             <i class="fa-solid fa-weight-scale"></i>
-                            <span>4.2 kg</span>
+                            <span id="home-weight">-- kg</span>
                         </div>
                     </div>
                     
                     <div class="bg-white dark:bg-dark-card rounded-2xl p-4 shadow-soft border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
                         <div>
                             <p class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">Tugas Hari Ini</p>
-                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">2 <span class="text-base font-normal text-gray-500">/ 5</span></h2>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white" id="home-task-count">0 <span class="text-base font-normal text-gray-500">/ 0</span></h2>
                         </div>
                         <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 mt-4">
-                            <div class="bg-secondary-500 h-2 rounded-full" style="width: 40%"></div>
+                            <div id="home-task-progress" class="bg-secondary-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
@@ -148,158 +146,42 @@
                 <div class="px-6 py-4">
                     <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">Tindakan Cepat</h3>
                     <div class="flex justify-between gap-3">
-                        <button class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                        <button onclick="app.quickAddAction('food')" class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
                             <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-500 flex items-center justify-center text-xl">
                                 <i class="fa-solid fa-bowl-food"></i>
                             </div>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Beri Makan</span>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Makan</span>
                         </button>
-                        <button class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                        <button onclick="app.quickAddAction('water')" class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
                             <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center text-xl">
                                 <i class="fa-solid fa-droplet"></i>
                             </div>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Beri Minum</span>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Minum</span>
                         </button>
-                        <button class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
+                        <button onclick="app.quickAddAction('hygiene')" class="flex-1 bg-white dark:bg-dark-card p-3 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center justify-center gap-2 hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors active:scale-95">
                             <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-500 flex items-center justify-center text-xl">
                                 <i class="fa-solid fa-poop"></i>
                             </div>
-                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Cek Pasir</span>
+                            <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Pasir</span>
                         </button>
-                    </div>
-                </div>
-
-                <!-- Upcoming Reminders -->
-                <div class="px-6 py-2 pb-6">
-                    <div class="flex justify-between items-end mb-4">
-                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Jadwal Terdekat</h3>
-                        <a href="#" class="text-xs text-primary-600 font-medium hover:underline">Lihat Semua</a>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <!-- Reminder Item 1 -->
-                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4 relative overflow-hidden">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary-500"></div>
-                            <div class="w-12 h-12 rounded-full bg-secondary-50 dark:bg-secondary-900/20 text-secondary-500 flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-syringe"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Vaksin Tahunan</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Klinik Hewan Sehat, 10:00 AM</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs font-bold text-secondary-500 bg-secondary-50 dark:bg-secondary-900/30 px-2 py-1 rounded-md">Besok</span>
-                            </div>
-                        </div>
-
-                        <!-- Reminder Item 2 -->
-                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4 relative overflow-hidden">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-300 dark:bg-gray-600"></div>
-                            <div class="w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800 text-gray-500 flex items-center justify-center text-xl shrink-0">
-                                <i class="fa-solid fa-scissors"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900 dark:text-white text-sm">Grooming Rutin</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Potong kuku & mandi</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs font-medium text-gray-500">15 Sep</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- VIEW: RUTINITAS (TASKS) -->
             <div id="view-routine" class="view-section hidden">
-                <div class="px-6 py-6">
+                <div class="px-6 py-6 pb-20">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Rutinitas Harian</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Senin, 13 September 2026</p>
+                    <p id="current-date-display" class="text-sm text-gray-500 dark:text-gray-400 mb-6">Hari ini</p>
 
-                    <!-- Task List -->
-                    <div class="space-y-4">
-                        
-                        <!-- Task Category: Makanan -->
-                        <div>
-                            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Makanan & Minuman</h3>
-                            <div class="space-y-2">
-                                <!-- Completed Task -->
-                                <label class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-transparent cursor-pointer opacity-70 transition-all">
-                                    <div class="relative flex items-center justify-center">
-                                        <input type="checkbox" checked class="peer sr-only">
-                                        <div class="w-6 h-6 border-2 border-primary-500 bg-primary-500 rounded-md flex items-center justify-center peer-checked:bg-primary-500 transition-colors">
-                                            <i class="fa-solid fa-check text-white text-xs"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-1 line-through">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Sarapan (Dry Food)</p>
-                                        <p class="text-xs text-gray-500">07:00 AM - 50 gram</p>
-                                    </div>
-                                </label>
-
-                                <!-- Pending Task -->
-                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer hover:border-primary-300 transition-all">
-                                    <div class="relative flex items-center justify-center">
-                                        <input type="checkbox" class="peer sr-only">
-                                        <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
-                                            <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Ganti Air Minum</p>
-                                        <p class="text-xs text-gray-500">Cuci mangkuk air bersih</p>
-                                    </div>
-                                    <div class="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center text-sm">
-                                        <i class="fa-solid fa-droplet"></i>
-                                    </div>
-                                </label>
-
-                                <!-- Pending Task -->
-                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer hover:border-primary-300 transition-all">
-                                    <div class="relative flex items-center justify-center">
-                                        <input type="checkbox" class="peer sr-only">
-                                        <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
-                                            <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Makan Malam (Wet Food)</p>
-                                        <p class="text-xs text-gray-500">18:00 PM - 1 pouch tuna</p>
-                                    </div>
-                                    <div class="w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-500 flex items-center justify-center text-sm">
-                                        <i class="fa-solid fa-fish"></i>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Task Category: Kebersihan -->
-                        <div class="pt-4">
-                            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Kebersihan</h3>
-                            <div class="space-y-2">
-                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer hover:border-primary-300 transition-all">
-                                    <div class="relative flex items-center justify-center">
-                                        <input type="checkbox" class="peer sr-only">
-                                        <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
-                                            <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
-                                        </div>
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">Bersihkan Litter Box</p>
-                                        <p class="text-xs text-gray-500">Buang kotoran & tambah pasir</p>
-                                    </div>
-                                    <div class="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-500 flex items-center justify-center text-sm">
-                                        <i class="fa-solid fa-broom"></i>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
+                    <!-- Dynamic Task List Container -->
+                    <div id="task-list-container" class="space-y-4">
+                        <!-- Tasks will be injected here by JS -->
                     </div>
                 </div>
                 
                 <!-- Floating Action Button for adding task -->
-                <button class="absolute bottom-6 right-6 w-14 h-14 bg-primary-500 text-white rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-primary-600 transition-transform transform active:scale-90 z-10" onclick="showNotification('Fitur tambah tugas akan segera hadir!')">
+                <button onclick="app.openModal('modal-add-task')" class="fixed bottom-24 right-1/2 translate-x-[200px] sm:absolute sm:bottom-6 sm:right-6 w-14 h-14 bg-primary-500 text-white rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-primary-600 transition-transform transform active:scale-90 z-10">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
@@ -309,127 +191,54 @@
                 <div class="px-6 py-6">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Rekam Medis</h2>
 
-                    <!-- Weight Chart Mockup -->
+                    <!-- Weight Tracking Summary -->
                     <div class="bg-white dark:bg-dark-card rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800 mb-6">
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="flex justify-between items-center mb-2">
                             <div>
-                                <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Berat Badan</h3>
-                                <p class="text-xs text-gray-500">6 Bulan Terakhir</p>
+                                <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Berat Badan Saat Ini</h3>
                             </div>
-                            <span class="text-lg font-bold text-primary-500">4.2 <span class="text-sm text-gray-500 font-normal">kg</span></span>
+                            <span class="text-2xl font-bold text-primary-500" id="health-weight-display">-- <span class="text-sm text-gray-500 font-normal">kg</span></span>
                         </div>
-                        
-                        <!-- Simple CSS Bar Chart -->
-                        <div class="h-32 flex items-end justify-between gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                            <div class="flex flex-col items-center gap-2 w-full">
-                                <div class="w-full bg-primary-100 dark:bg-primary-900/30 rounded-t-md relative group h-[60%]">
-                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.5kg</div>
-                                </div>
-                                <span class="text-[10px] text-gray-500">Apr</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-2 w-full">
-                                <div class="w-full bg-primary-200 dark:bg-primary-900/50 rounded-t-md relative group h-[70%]">
-                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.8kg</div>
-                                </div>
-                                <span class="text-[10px] text-gray-500">Mei</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-2 w-full">
-                                <div class="w-full bg-primary-300 dark:bg-primary-800/60 rounded-t-md relative group h-[75%]">
-                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.9kg</div>
-                                </div>
-                                <span class="text-[10px] text-gray-500">Jun</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-2 w-full">
-                                <div class="w-full bg-primary-400 dark:bg-primary-700/80 rounded-t-md relative group h-[75%]">
-                                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.9kg</div>
-                                </div>
-                                <span class="text-[10px] text-gray-500">Jul</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-2 w-full">
-                                <div class="w-full bg-primary-500 rounded-t-md relative group h-[85%]">
-                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">4.1kg</div>
-                                </div>
-                                <span class="text-[10px] text-gray-500">Agu</span>
-                            </div>
-                            <div class="flex flex-col items-center gap-2 w-full">
-                                <div class="w-full bg-secondary-500 rounded-t-md relative group h-[90%] shadow-[0_0_10px_rgba(249,115,22,0.3)]">
-                                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">4.2kg</div>
-                                </div>
-                                <span class="text-[10px] text-gray-900 dark:text-white font-bold">Sep</span>
-                            </div>
-                        </div>
+                        <p class="text-xs text-gray-500">Catat berat badan secara rutin di menu Profil untuk memantau kesehatan.</p>
                     </div>
 
                     <!-- Medical History List -->
-                    <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">Riwayat Vaksin & Obat</h3>
-                    <div class="space-y-3">
-                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
-                            <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-500 flex items-center justify-center mt-1">
-                                <i class="fa-solid fa-shield-cat"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Vaksin F3 (Tricat)</h4>
-                                <p class="text-xs text-gray-500 mt-1">Diberikan oleh drh. Andi</p>
-                                <p class="text-[10px] font-medium text-gray-400 mt-2"><i class="fa-regular fa-calendar mr-1"></i> 12 Jan 2026</p>
-                            </div>
-                        </div>
-                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-500 flex items-center justify-center mt-1">
-                                <i class="fa-solid fa-capsules"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Obat Cacing (Drontal)</h4>
-                                <p class="text-xs text-gray-500 mt-1">Diberikan mandiri di rumah</p>
-                                <p class="text-[10px] font-medium text-gray-400 mt-2"><i class="fa-regular fa-calendar mr-1"></i> 15 Jun 2026</p>
-                            </div>
-                        </div>
+                    <div class="flex justify-between items-end mb-3">
+                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Riwayat Medis & Vaksin</h3>
+                    </div>
+                    <div id="health-history-container" class="space-y-3">
+                        <!-- History will be injected here -->
                     </div>
                 </div>
             </div>
 
             <!-- VIEW: PROFIL (PROFILE) -->
             <div id="view-profile" class="view-section hidden">
-                <div class="px-6 py-8 flex flex-col items-center border-b border-gray-100 dark:border-gray-800">
+                <div class="px-6 py-8 flex flex-col items-center border-b border-gray-100 dark:border-gray-800 relative">
                     <div class="relative mb-4">
                         <div class="w-24 h-24 rounded-full bg-primary-100 border-4 border-white dark:border-gray-800 shadow-md overflow-hidden">
-                            <img src="https://placehold.co/200x200/14b8a6/ffffff?text=Luna&font=Montserrat" alt="Luna" class="w-full h-full object-cover">
+                            <img id="profile-avatar" src="https://placehold.co/200x200/14b8a6/ffffff?text=C&font=Montserrat" alt="Cat Avatar" class="w-full h-full object-cover">
                         </div>
-                        <button class="absolute bottom-0 right-0 w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-sm hover:bg-primary-600">
-                            <i class="fa-solid fa-camera text-xs"></i>
-                        </button>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Luna</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Domestic Short Hair • Betina • 2 Thn</p>
+                    <h2 id="profile-name" class="text-xl font-bold text-gray-900 dark:text-white">Nama Kucing</h2>
+                    <p id="profile-desc" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Ras • Gender • Umur</p>
+                    
+                    <button onclick="app.openModal('modal-edit-profile')" class="mt-4 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Profil
+                    </button>
                 </div>
 
                 <div class="px-6 py-6 space-y-6">
                     <div>
-                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Pengaturan Akun</h3>
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Sistem Data</h3>
                         <div class="bg-white dark:bg-dark-card rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-                            <a href="#" class="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                <div class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <i class="fa-solid fa-paw text-gray-400 w-5"></i> Data Kucing
+                            <button onclick="app.resetData()" class="w-full flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors">
+                                <div class="flex items-center gap-3 text-sm font-medium text-red-600 dark:text-red-400">
+                                    <i class="fa-solid fa-trash-can w-5"></i> Hapus Semua Data
                                 </div>
-                                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-                            </a>
-                            <a href="#" class="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                <div class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <i class="fa-solid fa-bell text-gray-400 w-5"></i> Notifikasi
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-                            </a>
-                            <a href="#" class="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                                <div class="flex items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <i class="fa-solid fa-circle-info text-gray-400 w-5"></i> Tentang Aplikasi
-                                </div>
-                                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-                            </a>
+                            </button>
                         </div>
                     </div>
-                    
-                    <button class="w-full py-3 px-4 bg-red-50 dark:bg-red-900/10 text-red-500 font-medium text-sm rounded-xl border border-red-100 dark:border-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors" onclick="showNotification('Anda berhasil keluar.')">
-                        <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Keluar
-                    </button>
                 </div>
             </div>
             
@@ -437,22 +246,104 @@
             <div class="h-10"></div>
         </main>
 
+        <!-- MODALS AREA -->
+        
+        <!-- Modal Add Task -->
+        <div id="modal-add-task" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-add-task')"></div>
+            <!-- Modal Content -->
+            <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-add-task-content">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Tambah Rutinitas</h3>
+                    <button onclick="app.closeModal('modal-add-task')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <form id="form-add-task" onsubmit="app.submitNewTask(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Tugas</label>
+                        <input type="text" id="task-title" required placeholder="Contoh: Beri makan basah" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Keterangan / Waktu</label>
+                        <input type="text" id="task-desc" required placeholder="Contoh: 08:00 Pagi" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori</label>
+                        <select id="task-category" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <option value="food">Makanan</option>
+                            <option value="water">Minuman</option>
+                            <option value="hygiene">Kebersihan (Pasir)</option>
+                            <option value="medical">Medis / Obat</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">
+                        Simpan Tugas
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Edit Profile -->
+        <div id="modal-edit-profile" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="app.closeModal('modal-edit-profile')"></div>
+            <!-- Modal Content -->
+            <div class="bg-white dark:bg-dark-card w-full sm:w-[90%] max-w-md rounded-t-3xl sm:rounded-3xl p-6 relative z-10 transform transition-transform translate-y-full" id="modal-edit-profile-content">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Edit Profil Kucing</h3>
+                    <button onclick="app.closeModal('modal-edit-profile')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <form id="form-edit-profile" onsubmit="app.submitProfileEdit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Kucing</label>
+                        <input type="text" id="edit-name" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Ras</label>
+                            <input type="text" id="edit-breed" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis Kelamin</label>
+                            <select id="edit-gender" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                <option value="Jantan">Jantan</option>
+                                <option value="Betina">Betina</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Umur</label>
+                            <input type="text" id="edit-age" placeholder="Contoh: 2 Tahun" class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Berat (kg)</label>
+                            <input type="number" step="0.1" id="edit-weight" required class="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold shadow-md transition-colors mt-2">
+                        Simpan Profil
+                    </button>
+                </form>
+            </div>
+        </div>
+
         <!-- Bottom Navigation Bar -->
         <nav class="absolute bottom-0 w-full bg-white dark:bg-dark-bg border-t border-gray-200 dark:border-gray-800 shadow-nav z-30 pb-safe">
             <ul class="flex justify-around items-center px-2 py-2">
-                <!-- Nav Item: Home -->
                 <li class="flex-1">
                     <button class="nav-btn w-full flex flex-col items-center py-2 text-primary-600 dark:text-primary-400 group" data-target="view-home">
                         <div class="relative">
                             <i class="fa-solid fa-house text-xl mb-1 group-hover:scale-110 transition-transform duration-200"></i>
-                            <!-- Active Indicator Dot -->
                             <span class="nav-indicator absolute -bottom-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full"></span>
                         </div>
                         <span class="text-[10px] font-medium mt-1">Beranda</span>
                     </button>
                 </li>
-                
-                <!-- Nav Item: Tasks -->
                 <li class="flex-1">
                     <button class="nav-btn w-full flex flex-col items-center py-2 text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group" data-target="view-routine">
                         <div class="relative">
@@ -462,15 +353,11 @@
                         <span class="text-[10px] font-medium mt-1">Rutinitas</span>
                     </button>
                 </li>
-
-                <!-- Center FAB style nav item -->
                 <li class="flex-1 flex justify-center -mt-6">
-                    <button class="w-14 h-14 bg-gradient-to-tr from-primary-600 to-primary-400 rounded-full text-white shadow-lg flex items-center justify-center text-2xl border-4 border-white dark:border-dark-bg transform transition-transform hover:scale-105 active:scale-95" onclick="showNotification('Buka scanner kamera/AI diagnostik')">
-                        <i class="fa-solid fa-expand"></i>
+                    <button onclick="app.openModal('modal-add-task')" class="w-14 h-14 bg-gradient-to-tr from-primary-600 to-primary-400 rounded-full text-white shadow-lg flex items-center justify-center text-2xl border-4 border-white dark:border-dark-bg transform transition-transform hover:scale-105 active:scale-95">
+                        <i class="fa-solid fa-plus"></i>
                     </button>
                 </li>
-
-                <!-- Nav Item: Health -->
                 <li class="flex-1">
                     <button class="nav-btn w-full flex flex-col items-center py-2 text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group" data-target="view-health">
                         <div class="relative">
@@ -480,8 +367,6 @@
                         <span class="text-[10px] font-medium mt-1">Kesehatan</span>
                     </button>
                 </li>
-
-                <!-- Nav Item: Profile -->
                 <li class="flex-1">
                     <button class="nav-btn w-full flex flex-col items-center py-2 text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors group" data-target="view-profile">
                         <div class="relative">
@@ -494,121 +379,332 @@
             </ul>
         </nav>
 
-        <!-- Toast Notification System -->
-        <div id="toast-container" class="absolute top-20 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-[90%] pointer-events-none">
-            <!-- Toasts will be injected here -->
-        </div>
-
+        <div id="toast-container" class="absolute top-20 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-[90%] pointer-events-none"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Theme Toggle Logic ---
-            const themeToggleBtn = document.getElementById('themeToggle');
-            const htmlElement = document.documentElement;
-            
-            // Check for saved preference or system preference
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                htmlElement.classList.add('dark');
-            } else {
-                htmlElement.classList.remove('dark');
-            }
+        // --- 1. State Management & Data ---
+        const defaultData = {
+            profile: {
+                name: 'Kucingku',
+                breed: 'Domestic Short Hair',
+                gender: 'Betina',
+                age: '1 Tahun',
+                weight: '3.5'
+            },
+            tasks: [
+                { id: 1, title: 'Sarapan (Dry Food)', desc: '07:00 Pagi', category: 'food', completed: false },
+                { id: 2, title: 'Ganti Air Minum', desc: 'Pagi Hari', category: 'water', completed: false },
+                { id: 3, title: 'Bersihkan Litter Box', desc: 'Sore Hari', category: 'hygiene', completed: false }
+            ],
+            healthHistory: [
+                { id: 1, title: 'Vaksin Tahunan', date: 'Bulan Lalu', type: 'vaccine' }
+            ]
+        };
 
-            themeToggleBtn.addEventListener('click', () => {
-                htmlElement.classList.toggle('dark');
-                if (htmlElement.classList.contains('dark')) {
-                    localStorage.theme = 'dark';
+        // Application Object to hold logic
+        const app = {
+            data: null,
+
+            init: function() {
+                // Load data from LocalStorage or use default
+                const savedData = localStorage.getItem('purrfectCareData');
+                if (savedData) {
+                    this.data = JSON.parse(savedData);
                 } else {
-                    localStorage.theme = 'light';
+                    this.data = JSON.parse(JSON.stringify(defaultData));
+                    this.saveData();
                 }
-            });
 
-            // --- Navigation Logic ---
-            const navButtons = document.querySelectorAll('.nav-btn');
-            const viewSections = document.querySelectorAll('.view-section');
-
-            navButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    // Prevent default just in case
-                    e.preventDefault();
-                    
-                    const targetId = btn.getAttribute('data-target');
-                    
-                    // 1. Update Navigation UI
-                    navButtons.forEach(b => {
-                        // Reset all buttons
-                        b.classList.remove('text-primary-600', 'dark:text-primary-400');
-                        b.classList.add('text-gray-400');
-                        // Hide all indicators
-                        b.querySelector('.nav-indicator').classList.add('hidden');
-                    });
-                    
-                    // Set active button
-                    btn.classList.remove('text-gray-400');
-                    btn.classList.add('text-primary-600', 'dark:text-primary-400');
-                    btn.querySelector('.nav-indicator').classList.remove('hidden');
-
-                    // 2. Switch Views
-                    viewSections.forEach(view => {
-                        view.classList.add('hidden');
-                        view.classList.remove('animate-fade-in'); // Reset animation
-                    });
-                    
-                    const targetView = document.getElementById(targetId);
-                    if (targetView) {
-                        targetView.classList.remove('hidden');
-                        // Add small delay to allow display block to apply before animation
-                        setTimeout(() => {
-                            targetView.classList.add('animate-fade-in');
-                        }, 10);
-                        
-                        // Scroll to top of view
-                        document.querySelector('.content-area').scrollTop = 0;
-                    }
-                });
-            });
-            
-            // Add custom animation via script insertion for cleaner HTML
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-fade-in {
-                    animation: fadeIn 0.3s ease-out forwards;
-                }
+                this.setupUI();
+                this.renderAll();
                 
-                @keyframes slideInDown {
-                    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-                    to { opacity: 1; transform: translateY(0) scale(1); }
+                // Set current date string
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('current-date-display').textContent = new Date().toLocaleDateString('id-ID', options);
+            },
+
+            saveData: function() {
+                localStorage.setItem('purrfectCareData', JSON.stringify(this.data));
+            },
+
+            renderAll: function() {
+                this.renderProfile();
+                this.renderTasks();
+                this.renderHomeStats();
+                this.renderHealth();
+            },
+
+            renderProfile: function() {
+                const { name, breed, gender, age, weight } = this.data.profile;
+                const avatarLetter = name.charAt(0).toUpperCase();
+                const avatarUrl = `https://placehold.co/200x200/14b8a6/ffffff?text=${avatarLetter}&font=Montserrat`;
+                
+                // Header
+                document.getElementById('header-greeting').textContent = `Halo, ${name}! 🐾`;
+                document.getElementById('header-avatar').src = avatarUrl;
+                
+                // Profile View
+                document.getElementById('profile-name').textContent = name;
+                document.getElementById('profile-desc').textContent = `${breed} • ${gender} • ${age}`;
+                document.getElementById('profile-avatar').src = avatarUrl;
+                
+                // Pre-fill Edit Modal
+                document.getElementById('edit-name').value = name;
+                document.getElementById('edit-breed').value = breed;
+                document.getElementById('edit-gender').value = gender;
+                document.getElementById('edit-age').value = age;
+                document.getElementById('edit-weight').value = weight;
+            },
+
+            renderHomeStats: function() {
+                const totalTasks = this.data.tasks.length;
+                const completedTasks = this.data.tasks.filter(t => t.completed).length;
+                let percentage = totalTasks === 0 ? 0 : (completedTasks / totalTasks) * 100;
+                
+                document.getElementById('home-weight').textContent = `${this.data.profile.weight} kg`;
+                document.getElementById('home-task-count').innerHTML = `${completedTasks} <span class="text-base font-normal text-gray-500">/ ${totalTasks}</span>`;
+                document.getElementById('home-task-progress').style.width = `${percentage}%`;
+            },
+
+            renderTasks: function() {
+                const container = document.getElementById('task-list-container');
+                container.innerHTML = ''; // Clear existing
+
+                if (this.data.tasks.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-500 py-10 text-sm">Belum ada rutinitas. Tambahkan tugas baru!</p>`;
+                    return;
                 }
-                .toast-enter {
-                    animation: slideInDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+                // Helper to get icon based on category
+                const getIcon = (category) => {
+                    switch(category) {
+                        case 'food': return { icon: 'fa-bowl-food', color: 'orange' };
+                        case 'water': return { icon: 'fa-droplet', color: 'blue' };
+                        case 'hygiene': return { icon: 'fa-poop', color: 'purple' };
+                        default: return { icon: 'fa-pills', color: 'green' };
+                    }
+                };
+
+                this.data.tasks.forEach(task => {
+                    const style = getIcon(task.category);
+                    const isChecked = task.completed ? 'checked' : '';
+                    const opacityClass = task.completed ? 'opacity-60 bg-gray-50 dark:bg-gray-800/50' : 'bg-white dark:bg-dark-card hover:border-primary-300';
+                    const textStrike = task.completed ? 'line-through text-gray-500' : 'text-gray-900 dark:text-white';
+                    
+                    const taskHTML = `
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm cursor-pointer transition-all ${opacityClass}">
+                            <div class="relative flex items-center justify-center">
+                                <input type="checkbox" class="peer sr-only" ${isChecked} onchange="app.toggleTask(${task.id})">
+                                <div class="w-6 h-6 border-2 border-gray-300 dark:border-gray-600 rounded-md flex items-center justify-center peer-checked:bg-primary-500 peer-checked:border-primary-500 transition-colors">
+                                    <i class="fa-solid fa-check text-white text-xs opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 ${textStrike}">
+                                <p class="text-sm font-medium">${task.title}</p>
+                                <p class="text-xs ${task.completed ? 'text-gray-400' : 'text-gray-500'}">${task.desc}</p>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-${style.color}-50 dark:bg-${style.color}-900/20 text-${style.color}-500 flex items-center justify-center text-sm">
+                                <i class="fa-solid ${style.icon}"></i>
+                            </div>
+                            <button type="button" onclick="app.deleteTask(${task.id}, event)" class="ml-2 text-gray-300 hover:text-red-500 transition-colors">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </label>
+                    `;
+                    container.insertAdjacentHTML('beforeend', taskHTML);
+                });
+            },
+
+            renderHealth: function() {
+                document.getElementById('health-weight-display').innerHTML = `${this.data.profile.weight} <span class="text-sm text-gray-500 font-normal">kg</span>`;
+                
+                const container = document.getElementById('health-history-container');
+                container.innerHTML = '';
+                
+                this.data.healthHistory.forEach(record => {
+                    const html = `
+                        <div class="bg-white dark:bg-dark-card p-4 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-500 flex items-center justify-center mt-1">
+                                <i class="fa-solid fa-shield-cat"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-semibold text-gray-900 dark:text-white">${record.title}</h4>
+                                <p class="text-[10px] font-medium text-gray-400 mt-1"><i class="fa-regular fa-calendar mr-1"></i> ${record.date}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            },
+
+            toggleTask: function(id) {
+                const task = this.data.tasks.find(t => t.id === id);
+                if (task) {
+                    task.completed = !task.completed;
+                    this.saveData();
+                    this.renderTasks();
+                    this.renderHomeStats();
+                    
+                    if (task.completed) {
+                        showNotification('Tugas diselesaikan!', 'success');
+                    }
                 }
-            `;
-            document.head.appendChild(style);
-        });
+            },
+
+            deleteTask: function(id, event) {
+                event.preventDefault(); // Prevent triggering the label toggle
+                event.stopPropagation();
+                
+                this.data.tasks = this.data.tasks.filter(t => t.id !== id);
+                this.saveData();
+                this.renderTasks();
+                this.renderHomeStats();
+                showNotification('Tugas dihapus');
+            },
+
+            submitNewTask: function(e) {
+                e.preventDefault();
+                const title = document.getElementById('task-title').value;
+                const desc = document.getElementById('task-desc').value;
+                const category = document.getElementById('task-category').value;
+                
+                const newTask = {
+                    id: Date.now(), // Generate unique ID
+                    title,
+                    desc,
+                    category,
+                    completed: false
+                };
+                
+                this.data.tasks.push(newTask);
+                this.saveData();
+                this.renderTasks();
+                this.renderHomeStats();
+                
+                this.closeModal('modal-add-task');
+                e.target.reset(); // Reset form
+                showNotification('Rutinitas baru ditambahkan!', 'success');
+            },
+
+            quickAddAction: function(category) {
+                this.openModal('modal-add-task');
+                document.getElementById('task-category').value = category;
+                
+                if(category === 'food') document.getElementById('task-title').value = 'Beri Makan';
+                if(category === 'water') document.getElementById('task-title').value = 'Ganti Air Minum';
+                if(category === 'hygiene') document.getElementById('task-title').value = 'Cek Pasir Kucing';
+            },
+
+            submitProfileEdit: function(e) {
+                e.preventDefault();
+                this.data.profile.name = document.getElementById('edit-name').value;
+                this.data.profile.breed = document.getElementById('edit-breed').value;
+                this.data.profile.gender = document.getElementById('edit-gender').value;
+                this.data.profile.age = document.getElementById('edit-age').value;
+                this.data.profile.weight = document.getElementById('edit-weight').value;
+                
+                this.saveData();
+                this.renderAll();
+                this.closeModal('modal-edit-profile');
+                showNotification('Profil berhasil diperbarui!', 'success');
+            },
+
+            resetData: function() {
+                if(confirm('Anda yakin ingin menghapus semua data? Halaman akan dimuat ulang.')) {
+                    localStorage.removeItem('purrfectCareData');
+                    window.location.reload();
+                }
+            },
+
+            openModal: function(modalId) {
+                const modal = document.getElementById(modalId);
+                const content = document.getElementById(`${modalId}-content`);
+                modal.classList.remove('hidden');
+                
+                // Allow display flex to apply before animating in
+                setTimeout(() => {
+                    content.classList.remove('translate-y-full');
+                }, 10);
+            },
+
+            closeModal: function(modalId) {
+                const modal = document.getElementById(modalId);
+                const content = document.getElementById(`${modalId}-content`);
+                
+                content.classList.add('translate-y-full');
+                
+                // Wait for animation to finish before hiding
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); // 300ms matches Tailwind default transition duration
+            },
+
+            setupUI: function() {
+                // Theme Toggle
+                const themeToggleBtn = document.getElementById('themeToggle');
+                const htmlElement = document.documentElement;
+                
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    htmlElement.classList.add('dark');
+                } else {
+                    htmlElement.classList.remove('dark');
+                }
+
+                themeToggleBtn.addEventListener('click', () => {
+                    htmlElement.classList.toggle('dark');
+                    localStorage.theme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+                });
+
+                // Navigation Logic
+                const navButtons = document.querySelectorAll('.nav-btn');
+                const viewSections = document.querySelectorAll('.view-section');
+
+                navButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = btn.getAttribute('data-target');
+                        
+                        // Update UI
+                        navButtons.forEach(b => {
+                            b.classList.remove('text-primary-600', 'dark:text-primary-400');
+                            b.classList.add('text-gray-400');
+                            b.querySelector('.nav-indicator').classList.add('hidden');
+                        });
+                        
+                        btn.classList.remove('text-gray-400');
+                        btn.classList.add('text-primary-600', 'dark:text-primary-400');
+                        btn.querySelector('.nav-indicator').classList.remove('hidden');
+
+                        // Switch Views
+                        viewSections.forEach(view => {
+                            view.classList.add('hidden');
+                            view.classList.remove('animate-fade-in');
+                        });
+                        
+                        const targetView = document.getElementById(targetId);
+                        if (targetView) {
+                            targetView.classList.remove('hidden');
+                            setTimeout(() => targetView.classList.add('animate-fade-in'), 10);
+                            document.querySelector('.content-area').scrollTop = 0;
+                        }
+                    });
+                });
+            }
+        };
 
         // --- Custom Toast Notification Function ---
         function showNotification(message, type = 'info') {
             const container = document.getElementById('toast-container');
-            
             const toast = document.createElement('div');
             toast.className = `bg-gray-800 dark:bg-white text-white dark:text-gray-900 px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium toast-enter pointer-events-auto`;
             
             let icon = 'fa-circle-info';
             if (type === 'success') icon = 'fa-circle-check text-green-400';
             
-            toast.innerHTML = `
-                <i class="fa-solid ${icon}"></i>
-                <span>${message}</span>
-            `;
-            
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
             container.appendChild(toast);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(-20px)';
@@ -616,6 +712,29 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
+
+        // Initialize App on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add custom animation styles dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+                
+                @keyframes slideInDown {
+                    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                .toast-enter { animation: slideInDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+            `;
+            document.head.appendChild(style);
+
+            // Start the application logic
+            app.init();
+        });
     </script>
 </body>
 </html>
